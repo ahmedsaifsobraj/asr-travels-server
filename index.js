@@ -7,10 +7,14 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true // Allow credentials if needed
+}));
 // app.use(bodyParser.json());
 
-
+app.options('*', cors());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yc8ov.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
