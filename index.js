@@ -41,10 +41,33 @@ async function run() {
       const result = await countryList.findOne(query);
       res.send(result);
     })
+
+    app.get('/spots/:country', async (req, res) => {
+      const countryName = req.params.country;
+      const query = { country: countryName }; // Adjusted this line
+      const result = await touristSpots.find(query).toArray();
+      res.send(result);
+  });
     //for tourist spots
     app.post('/spots',async(req,res)=>{
-      const newSpots = req.body;
+      const newSpots = { ...req.body, userId: req.body.userId };
       const result = await touristSpots.insertOne(newSpots);
+      res.send(result);
+    })
+    app.get('/spots/user/:userId', async (req, res) => {
+      const userId = req.params.userId;
+      const query = { userId: userId }; // Filter by userId
+      const cursor = touristSpots.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+  });
+
+
+
+    //
+    app.get('/spots',async(req,res)=>{
+      const cursor = touristSpots.find();
+      const result = await cursor.toArray();
       res.send(result);
     })
 
